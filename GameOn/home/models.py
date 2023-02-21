@@ -1,7 +1,10 @@
 from django.db import models
 from django.contrib.postgres.fields import ArrayField
 from django.utils import timezone
-# Create your models here.
+from django.contrib.auth.models import AbstractBaseUser, BaseUserManager
+
+
+#Create your models here.from .models import User
 class Category(models.Model):
     name = models.CharField(max_length=64)
     def __str__(self):
@@ -60,6 +63,11 @@ class NewsBlog(models.Model):
 
 class Message(models.Model):
     content = models.TextField()
+
+
+
+
+
 
 
 

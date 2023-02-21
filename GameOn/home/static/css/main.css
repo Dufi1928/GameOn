@@ -1,0 +1,74 @@
+@import url("reset.css");
+@font-face {
+    font-family: "Mars";
+    src: url("../fonts/Mars/Mars.ttf") format("woff");
+}
+
+body{
+    background: #221C3E;
+    display: flex;
+}
+
+.logo{
+    padding-top: 32px;
+    margin: auto;
+    width:80%;
+    flex-direction: column;
+    font-family: Mars;
+    font-size: 39px;
+    font-weight: 400;
+    line-height: 46px;
+    letter-spacing: 0em;
+    text-align: left;
+    color: #7456D0;
+    display: flex;
+}
+
+.logo .game{
+    text-align: left;
+}
+.logo .on{
+    text-align: right;
+}
+.dashboard{
+    width: 254px;
+    margin-left: 30px;
+    margin-top: 30px;
+    display: flex;
+    text-align: right;
+    flex-direction: column;
+    max-width:254px;
+    max-height: 867.92px;
+    border-radius:38px;
+    background:
+        linear-gradient(114.72deg,
+        rgba(255, 255, 255, 0.39) -51.38%,
+        rgba(255, 255, 255, 0) 62.84%,
+        rgba(196, 196, 196, 0) 100.12%);
+        linear-gradient(262.27deg,
+        rgba(127, 127, 127, 0.1449) 50%,
+        rgba(92, 92, 92, 0.63) 70.6%);
+    border: 1.3px solid rgba(92, 92, 92, 0.63) ;
+}
+.dashboard ul{
+    flex-direction: column;
+    padding: 50px;
+    position: relative;
+    display: flex;
+}
+.dashboard ul li{
+    font-family: Montserrat, sans-serif ;
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 16px;
+    letter-spacing: 0px;
+    text-align: left;
+    margin-bottom: 40px;
+    display: flex;
+    align-items: center;
+}
+
+.dashboard ul li a {
+    color: #96A5B8;
+    margin-left: 10px;
+}

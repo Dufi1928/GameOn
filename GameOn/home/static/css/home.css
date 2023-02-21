@@ -1,0 +1,78 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:ital@0;1&display=swap');
+.main{
+    width: 75%;
+    margin-left:auto;
+    margin-right: auto;
+}
+.main-content{
+    margin-top: 75px;
+    display: flex;
+    justify-content: center;
+}
+.title{
+    width:70%;
+}
+.main-title{
+    width: 100%;
+    font-family: 'Montserrat', sans-serif;
+    font-style: normal;
+    font-weight: 700;
+    font-size: 40px;
+    line-height: 66px;
+    color: #5D5A88;
+    text-align: center;
+}
+.main-subtitle{
+    font-family: 'DM Sans', sans-serif;
+    font-style: normal;
+    font-weight: 400;
+    font-size: 18px;
+    line-height: 30px;
+    text-align: center;
+    color: #9795B5;
+    margin-bottom: 40px;
+}
+.title-buttons{
+    display:flex;
+    justify-content: center;
+}
+.title-button-getstarted{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    padding: 24px 36px;
+    gap: 8px;
+    width: 205px;
+    height: 66px;
+    background: #5D5A88;
+    border-radius: 40px;
+    color: #FFFFFF;
+    font-family: 'Montserrat';
+    font-style: normal;
+}
+.title-button-getstarted svg{
+    margin-left: 11px;
+}
+.title-button-sales{
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    padding: 24px 36px;
+    gap: 8px;
+    height: 66px;
+    background: #FFFFFF;
+    border: 1px solid #D4D2E3;
+    border-radius: 36.5499px;
+    font-family: 'Montserrat';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 18px;
+    line-height: 18px;
+    flex: none;
+    order: 1;
+    text-align: center;
+    flex-grow: 0;
+    margin-left: 24px;
+}
