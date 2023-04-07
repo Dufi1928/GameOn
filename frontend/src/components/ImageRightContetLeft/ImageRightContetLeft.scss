@@ -1,0 +1,85 @@
+@import '../../scss/App';
+
+.twoSideWrapper{
+    width:80%;
+    margin-top: 100px;
+    margin-bottom: 50px;
+    display: flex;
+    justify-content: space-between;
+    .left-side{
+        width: 45%;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        .left-title{
+            font-family: 'Montserrat', sans-serif;
+            font-style: normal;
+            font-weight: 700;
+            font-size: 40px;
+            text-align: start;
+            line-height: 46px;
+            color: $myPrimaryTitle;
+        }
+        p{
+          margin-top: 30px;
+          font-family: 'Plus Jakarta Sans', sans-serif;
+          font-style: normal;
+          font-weight: 400;
+          font-size: 18px;
+          line-height: 30px;
+          color: $myPrimaryText;
+        }
+        .home-buttons{
+            width: 100%;
+            display: flex;
+            margin-top: 30px;
+            justify-content: flex-start;
+            .purpleButton{
+                display: flex;
+                flex-direction: row;
+                align-items: center;
+                padding: 24px 36px;
+                gap: 8px;
+                background: #7456D0;
+                border: none;
+                box-shadow: 0 0 34px #7456D0;
+                border-radius: 40px;
+
+                font-family: 'Montserrat', sans-serif;
+                font-style: normal;
+                font-weight: 700;
+                color: white;
+                font-size: 18px;
+                line-height: 18px;
+            }
+            .white-button{
+                display: flex;
+                flex-direction: row;
+                align-items: center;
+                padding: 24px 36px;
+                gap: 8px;
+                background: #FFFFFF;
+                border: 1px solid #D4D2E3;
+                border-radius: 36.5499px;
+                margin-left: 24px;
+            }
+        }
+    }
+    .right-side{
+        display: flex;
+        align-items: center;
+        justify-content: flex-end;
+        .right-image{
+            width: 100%;
+            height: 500px;
+            border-radius: 40px;
+            background-color: #FFFFFF;
+            overflow: hidden;
+            img{
+                width: 100%;
+                height: 100%;
+                object-fit: cover;
+            }
+        }
+    }
+}

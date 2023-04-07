@@ -1,0 +1,36 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700;900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Montserrat&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;700&display=swap');
+@import 'Fonts';
+//Colors Start
+$myPrimaryColor: #221C3E;
+$myPrimaryDarkMode: #221C3E;
+$myPrimaryCta: #5D5A88;
+$myPrimaryTitle: #5D5A88;
+$myPrimaryText: #9795B5;
+$logoFont: #7456D0;
+//Colors End
+
+//Fonts Start
+
+
+//Fonts End
+
+
+*{
+    padding:0;
+    margin:0;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
+body{
+    background: $myPrimaryColor !important;
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 300;
+    .custumContent{
+        height: 800px;
+    }
+}

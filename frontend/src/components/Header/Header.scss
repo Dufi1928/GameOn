@@ -1,0 +1,65 @@
+@import '../../scss/App';
+header {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    align-items: center;
+    padding-top: 50px;
+    .nav-left {
+        display: flex;
+        width: 30%;
+        justify-content: space-between;
+    }
+    .logo-container {
+        color: $logoFont;
+        display: flex;
+        justify-content: center;
+        align-content: center;
+        flex-direction: column;
+        font-family: 'Mars', serif;
+        font-style: normal;
+        font-weight: 400;
+        font-size: 39px;
+        width:20%;
+        gap: 13px;
+
+        .logo-top{
+            text-align: left;
+            padding-left: 18%;
+        }
+
+        .logo-bottom{
+            text-align: right;
+            padding-right: 18%;
+        }
+
+        h2{
+            padding-bottom:0;
+            margin-bottom:0;
+            line-height: 30px;
+        }
+    }
+    .navLink{
+        font-family: DM Sans, sans-serif;
+        color: $myPrimaryTitle;
+        border:none;
+        background:none;
+        text-decoration: none;
+        font-size: 18px;
+        font-weight: 400;
+        line-height: 18px;
+        letter-spacing: 0;
+        text-align: center;
+        }
+    :hover {
+        text-shadow: 0 4px 4px rgba(0, 0, 0, 0.25),
+        0 1px 1px #000,
+        -1px 0 1px #000,
+        0 -1px 1px #000;
+        }
+    .nav-right {
+        display: flex;
+        width: 30%;
+        justify-content: space-between;
+    }
+}

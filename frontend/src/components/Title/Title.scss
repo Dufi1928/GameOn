@@ -1,0 +1,14 @@
+@import '../../scss/App';
+
+
+.title{
+        margin: 100px auto 30px auto; ;
+        font-family: 'Montserrat', sans-serif;
+        font-style: normal;
+        font-weight: 700;
+        font-size: 40px;
+        line-height: 66px;
+        text-align: center;
+        color: $myPrimaryTitle;
+        width: 60%;
+    }

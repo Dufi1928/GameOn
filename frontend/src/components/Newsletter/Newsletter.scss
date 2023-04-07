@@ -1,0 +1,47 @@
+@import '../../scss/App';
+
+.newsletter-wrapper{
+      display:flex;
+      justify-content:flex-start;
+      flex-direction: column;
+      width: 90%;
+      margin: 100px 0 100px 0 ;
+
+  form{
+    margin: auto;
+    .newsletter-title{
+        font-family: 'Montserrat', sans-serif;
+        font-style: normal;
+        font-weight: 700;
+        font-size: 28px;
+        color: $myPrimaryTitle;
+        line-height: 38px;
+    }
+    input{
+        min-width: 420px;
+        align-items: center;
+        padding: 14px 24px;
+        gap: 240px;
+        background: #F9F9FF;
+        border-radius: 50px;
+        border: none;
+        margin-right: 25px;
+    }
+    button{
+        padding: 18px 24px;
+        gap: 8px;
+        box-shadow: 0 0 34px #7456D0;
+        background-color: $logoFont;
+        border-radius: 30px;
+        border: none;
+        font-family: 'Montserrat', sans-serif;
+        text-align: center;
+        color: white;
+        font-style: normal;
+        font-weight: 700;
+        font-size: 16px;
+        line-height: 18px;
+    }
+  }
+
+}

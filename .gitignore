@@ -1,0 +1,8 @@
+.idea/
+frontend/node_modules/
+.env*
+!.env.example
+*.log
+*.cache
+*.tmp
+*.swp
