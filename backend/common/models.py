@@ -1,7 +1,10 @@
 from django.db import models
 from django.contrib.postgres.fields import ArrayField
 from django.utils import timezone
-from django.contrib.auth.models import AbstractBaseUser, BaseUserManager
+# from django.contrib.auth.models import AbstractBaseUser, BaseUserManager
+from django.contrib.auth.models import AbstractUser
+
+
 
 
 class Category(models.Model):
@@ -35,9 +38,6 @@ class Game(models.Model):
     review = models.ForeignKey('Review', on_delete=models.CASCADE, null=True)
     cetegory = models.ManyToManyField('Category')
 
-class NewsBlog(models.Model):
-    subject = models.CharField(max_length=255)
-    content = models.TextField()
 
 class Answer(models.Model):
     content = models.TextField()
