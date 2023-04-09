@@ -8,4 +8,4 @@ frontend/node_modules/
 *.swp
 venv/
 backend/backend/settings.py
-__pycache__
+backend/backend/__pycache__
