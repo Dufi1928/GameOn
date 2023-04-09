@@ -10,7 +10,6 @@ class TitleDescButtonsSection extends React.Component {
                         <img src="https://via.placeholder.com/570x375/F2F1FA" alt=""/>
                     </div>
                     <div className="imgRight">
-                        <p>hello</p>
                         <img src="https://via.placeholder.com/570x375/F9F9FF" alt=""/>
                     </div>
                 </div>
