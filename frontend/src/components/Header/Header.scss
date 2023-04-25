@@ -39,7 +39,10 @@ header {
             line-height: 30px;
         }
     }
-    .navLink{
+    .navLink {
+        &:hover{
+            color:$logoFont;
+        }
         font-family: DM Sans, sans-serif;
         color: $myPrimaryTitle;
         border:none;
@@ -50,13 +53,22 @@ header {
         line-height: 18px;
         letter-spacing: 0;
         text-align: center;
+        position: relative;
+        &:before {
+            content: "";
+            position: absolute;
+            left: 0;
+            bottom: -4px;
+            height: 2px;
+            width: 0;
+            background-color: $logoFont;
+            transition: all 0.3s ease-in-out;
         }
-    :hover {
-        text-shadow: 0 4px 4px rgba(0, 0, 0, 0.25),
-        0 1px 1px #000,
-        -1px 0 1px #000,
-        0 -1px 1px #000;
-        }
+    &:hover:before {
+        width: 100%;
+    }
+}
+
     .nav-right {
         display: flex;
         width: 30%;

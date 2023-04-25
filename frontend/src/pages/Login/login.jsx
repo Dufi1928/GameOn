@@ -89,7 +89,6 @@ function Login() {
                                 />
                                 {emailError && <div className="error-message">{emailError}</div>}
                             </div>
-
                         </div>
                         <div className="my-form">
                             <div className=" input-icon-container">
