@@ -1,0 +1,39 @@
+@import '../../scss/app';
+
+.login-container{
+    margin-top: 100px;
+}
+.loginPageContent{
+    overflow: hidden;
+    border-radius: 25px;
+    margin-bottom: 100px ;
+    border: 2px solid white;
+    position: relative;
+    min-height: 500px;
+}
+.leftSideLogin{
+        min-height: 100%;
+        padding:0;
+        backdrop-filter: blur(12px);
+        display: flex;
+        background-color: $logoFont;
+        align-items: center;
+        flex-direction: column;
+        justify-content: center;
+        .login_title{
+            font-family: 'Open Sans', sans-serif;
+            text-align: center;
+            font-style: normal;
+            margin-top: 30px;
+            color: white;
+            h3{
+                font-weight: 600;
+                font-size: 24px;
+                line-height: 200%;
+            }
+            p{
+                font-size: 14px;
+            }
+        }
+    }
+
