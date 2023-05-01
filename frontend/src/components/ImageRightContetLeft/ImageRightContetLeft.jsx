@@ -5,7 +5,7 @@ import './ImageRightContetLeft.scss';
 class ImageRightContetnLeft extends React.Component {
     render() {
         return (
-            <div className="container-fluid twoSideWrapper">
+            <div className="container-fluid twoSideWrapper mw-80">
                 <div className="left-side col-6">
                     <h3 className="left-title">
                         Boost your productivity with our to-do app

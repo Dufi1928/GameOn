@@ -1,0 +1,41 @@
+@import '../../scss/app';
+
+.rightSide{
+    background-color: white;
+    display: flex;
+    justify-content:center;
+    padding: 0;
+    border: none;
+    min-height: 500px;
+    flex-direction: column;
+    h3{
+        text-align: center;
+        font-family: 'Open Sans', sans-serif;
+        font-style: normal;
+        font-weight: 600;
+        font-size: 24px;
+        line-height: 33px;
+        color: $logoFont;
+        margin-top: 80px;
+        margin-bottom: 60px;
+    }
+}
+.input-icon-container{
+    .input-without-icon{
+        padding-left: 15px;
+        height: 40px;
+        border-radius: 15px;
+        border: 1px solid #D0D0D0;
+        width:90%;
+        &:focus {
+        outline-color: $logoFont;
+        }
+        &.error {
+            border-color: #ff1a1a;;
+            &::placeholder {
+                color: #ff1a1a;;
+            }
+        }
+    }
+
+}

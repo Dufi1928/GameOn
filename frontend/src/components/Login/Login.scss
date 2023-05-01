@@ -1,0 +1,182 @@
+@import '../../scss/app';
+    .rightSide{
+        background-color: white;
+        display: flex;
+        justify-content:center;
+        padding: 0;
+        border: none;
+        height: 100%;
+        flex-direction: column;
+        h3{
+            text-align: center;
+            font-family: 'Open Sans', sans-serif;
+            font-style: normal;
+            font-weight: 600;
+            font-size: 24px;
+            line-height: 33px;
+            color: $logoFont;
+            margin-top: 80px;
+            margin-bottom: 60px;
+        }
+    }
+    .input-icon-container {
+        margin-left: auto;
+        margin-bottom: 25px;
+        position: relative;
+        height: 40px;
+        border-radius: 15px;
+        width:90%;
+        .error-message{
+            color: #ff1a1a;
+            padding-bottom: 5px;
+        }
+
+    }
+    .input-icon {
+        position: absolute;
+        left: 10px;
+        top: 50%;
+        transform: translateY(-50%);
+        z-index: 1;
+        pointer-events: none;
+        color: #828282;
+    }
+    .input-with-icon {
+    padding-left: 35px;
+    height: 40px;
+    border-radius: 15px;
+    border: 1px solid #D0D0D0;
+    width:90%;
+    &:focus {
+        outline-color: $logoFont;
+    }
+    &.error {
+        border-color: #ff1a1a;;
+        &::placeholder {
+            color: #ff1a1a;;
+        }
+    }
+
+}
+    .orLine {
+        position: relative;
+        height: 28px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        p {
+            color:#828282;
+            font-family: Open-Sans, sans-serif ;
+            padding: 0 5px;
+            text-align: center;
+            margin-top: auto;
+            font-weight: 400;
+            font-size: 14px;
+            z-index: 2;
+            background: white;
+        }
+        &::after {
+            content: "";
+            height: 1px;
+            width: 50%;
+            background-color: #828282;
+            display: block;
+            position: absolute;
+            z-index: 1;
+            bottom: 60%;
+        }
+    }
+
+    .googleAndFacebookLogin{
+        width: 90%;
+        margin: 4px auto 8px auto;
+        display: flex;
+        justify-content: space-evenly;
+        .custom-facebook-btn {
+            background-color: #3b5998;
+            color: white;
+            font-weight: bold;
+            padding: 10px 20px;
+            border-radius: 5px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            text-decoration: none;
+            font-size: 14px;
+        }
+        .custom-facebook-btn:hover {
+            background-color: #2d4373;
+        }
+
+        .custom-facebook-btn .icon {
+            margin-right: 10px;
+        }
+
+    }
+    .my_googleButton {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            border-radius: 40px;
+            padding: 0 24px;
+            color: $logoFont ;
+            height: 36px;
+            width: 200px;
+            background: white;
+            gap: 8px;
+            border: solid 1px $logoFont;
+            font-style: normal;
+            font-weight: 400;
+            font-size: 14px;
+            line-height: 19px;
+        }
+    .forgetButton{
+        width: 90%;
+        text-align: right;
+        a{
+            text-decoration: none;
+            font-family: 'Open Sans', sans-serif;
+            font-style: normal;
+            font-weight: 400;
+            font-size: 14px;
+            line-height: 19px;
+            color: $logoFont;
+            width: 50%;
+        }
+    }
+    .submit-button{
+        width:90%;
+        display: flex;
+        justify-content:center;
+        margin: auto;
+        button{
+            width: 90%;
+            background: $logoFont;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 40px;
+            border: none;
+            padding: 11px 0 ;
+            gap: 8px;
+            font-family: 'Open Sans', sans-serif;
+            font-style: normal;
+            font-weight: 400;
+            font-size: 14px;
+            line-height: 19px;
+            color: white;
+            margin: 32px auto 8px auto;
+        }
+    }
+    .hasnt-account{
+        p{
+            color: #828282;
+            width:100%;
+        }
+        button{
+            margin: auto  auto 82px  auto;
+            width: 80% !important;
+        }
+    }

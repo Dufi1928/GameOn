@@ -3,7 +3,7 @@ import React from "react";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import Home from './pages/Home/home';
-import Login from './pages/Login/login';
+import Authentication from './pages/Authentication/authentication';
 import Blog from './pages/Blog/blog';
 import Games from './pages/Games/Games';
 import Contact from './pages/Contact/Contact';
@@ -14,7 +14,7 @@ function App() {
         <Router>
             <Routes>
                 <Route path="/" element={<Home />} />
-                <Route path="/login" element={<Login />} />
+                <Route path="/login" element={<Authentication />} />
                 <Route path="/signup" element={<SignUp />} />
                 <Route path="/blog" element={<Blog />} />
                 <Route path="/games" element={<Games />} />

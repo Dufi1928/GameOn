@@ -25,15 +25,21 @@ function Header() {
     }, []);
 
     const handleLogout = async () => {
-        try {
-            await axios.post("http://localhost:8000/api/logout", {}, {
-                withCredentials: true,
-            });
-            setIsLoggedIn(false);
-        } catch (error) {
-            console.error("Logout failed:", error);
+    try {
+        const response = await axios.post("http://localhost:8000/api/logout", {}, {
+            withCredentials: true,
+        });
+
+        // Ajouter ces lignes pour vérifier et afficher le résultat de la requête de déconnexion
+        if (response.status === 200) {
+            console.log("Logout successful:", response.data.message);
         }
-    };
+
+        setIsLoggedIn(false);
+    } catch (error) {
+        console.error("Logout failed:", error);
+    }
+};
 
     return (
         <div className="container">
