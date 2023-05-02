@@ -1,19 +1,19 @@
 import React, { useState } from "react";
-import axios from "axios";
+// import axios from "axios";
 import "../../scss/App.scss";
 import "./SignUp.scss";
 import { IoLockClosedOutline } from "react-icons/io5";
 import { HiOutlineMail } from "react-icons/hi";
 import 'bootstrap/dist/css/bootstrap.css';
 
-import { useNavigate } from "react-router-dom";
+// import { useNavigate } from "react-router-dom";
 
 function SignUp() {
 	const [email, setEmail] = useState("");
 	const [password, setPassword] = useState("");
 	const [emailError, setEmailError] = useState("");
 	const [passwordError, setPasswordError] = useState("");
-	const navigate = useNavigate();
+	// const navigate = useNavigate();
 
 	const clearEmailError = () => {
 		setEmailError("");
@@ -23,32 +23,7 @@ function SignUp() {
 	};
 
 	const handleSubmit = async (e) => {
-		e.preventDefault();
-		console.log("Form submitted");
 
-		try {
-			const response = await axios.post("http://localhost:8000/api/login", {
-				email,
-				password,
-			});
-
-			document.cookie = `jwt=${response.data.jwt}; path=/`;
-			navigate("/");
-		} catch (error) {
-			setEmailError("Le email incorrect");
-			setPasswordError("Mot de passe incorrect");
-			if (error.response && error.response.data) {
-				if (error.response.data.email) {
-					setEmailError(error.response.data.email);
-				}
-				if (error.response.data.password) {
-					setPasswordError(error.response.data.password);
-				}
-			} else {
-				setEmailError("Email or password is incorrect");
-				setPasswordError("Email or password is incorrect");
-			}
-		}
 	};
 
 	return (
@@ -129,5 +104,4 @@ function SignUp() {
 		</div>
 	);
 }
-
 export default SignUp;

@@ -9,6 +9,7 @@ import Login from "../../components/Login/Login";
 import SignUp from "../../components/SignUp/SignUp";
 
 function Authentication() {
+    const [showSignUp, setShowSignUp] = useState(false);
 
     return (
         <div className="App">
@@ -23,13 +24,23 @@ function Authentication() {
                             <h3>Bienvenue à bord !</h3>
                             <p>Juste quelques clics avant de commencer !</p>
                         </div>
+                        {showSignUp && (
+                            <div className='pagerWraper'>
+                                <ul className= 'pager'>
+                                    <li className='active'></li>
+                                    <li></li>
+                                    <li></li>
+                                </ul>
+                            </div>
+                        )}
                     </div>
-                    {/*<Login />*/}
-                    <SignUp />
+                    {showSignUp ? (
+                        <SignUp />
+                    ) : (
+                        <Login setShowSignUp={setShowSignUp} />
+                    )}
                 </div>
             </div>
-
-
             <Futter />
         </div>
     );

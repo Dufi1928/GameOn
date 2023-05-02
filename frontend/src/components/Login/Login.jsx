@@ -12,7 +12,7 @@ import { FcGoogle } from 'react-icons/fc';
 import { FaFacebook } from 'react-icons/fa';
 import FacebookLogin from 'react-facebook-login';
 
-function Login() {
+function Login({ setShowSignUp }) {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [emailError, setEmailError] = useState("");
@@ -121,6 +121,11 @@ function Login() {
         }
     };
 
+    const createAccount = async (e) => {
+        setShowSignUp(true);
+    }
+
+
     return (
         <div className="col-5 rightSide">
                         <h3>Bonjour</h3>
@@ -195,7 +200,7 @@ function Login() {
                             <p className='text-center'>
                                 Pas encore de compte ?
                             </p>
-                            <button className='my_googleButton'>
+                            <button onClick={createAccount} className='my_googleButton'>
                                 Inscription
                             </button>
                         </div>

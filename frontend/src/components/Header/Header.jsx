@@ -46,7 +46,6 @@ function Header() {
             <header>
                 <nav className="nav-left">
                     <Link className="navLink" to="/">Home</Link>
-                    <Link className="navLink" to="/Blog">Blog</Link>
                     <Link className="navLink" to="/About">About</Link>
                     <Link className="navLink" to="/games">Games</Link>
                     <Link className="navLink" to="/Contact">Contact</Link>
@@ -58,11 +57,9 @@ function Header() {
                 <nav className="nav-right">
                     <Link className="navLink" to="/usecase">Use cases</Link>
                     <Link className="navLink" to="/solutions">Solutions</Link>
+                    <Link className="navLink" to="/Blog">Blog</Link>
                     {isLoggedIn && (
                         <Link className="navLink" to="/account">Account</Link>
-                    )}
-                    {!isLoggedIn && (
-                        <Link className="navLink" to="/signup">Sign Up</Link>
                     )}
                     {isLoggedIn ? (
                         <button className="navLink" onClick={handleLogout}>Logout</button>
