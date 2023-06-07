@@ -1,0 +1,17 @@
+@import '../../scss/App';
+
+.record-button{
+    min-width: 50px;
+    min-height: 100px;
+    margin-top: 12px;
+    color: white;
+    .icon{
+        color: white !important;
+        fill: white;
+        font-size: 24px;
+        &:hover{
+            fill: $logoFont !important;
+            cursor: pointer;
+        }
+    }
+}

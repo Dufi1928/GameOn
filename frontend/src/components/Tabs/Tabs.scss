@@ -1,0 +1,128 @@
+@import '../../scss/app';
+
+.tabs-wrapper{
+    margin-top: 33px;
+    height: 550px;
+    position: relative;
+    .tabs{
+        display: flex;
+        width: 100%;
+        justify-content: space-evenly;
+        position: relative;
+        height: 48px;
+        border-radius: 14px;
+        overflow: hidden;
+        .tab-button{
+            border: none;
+            width: 100%;
+            background-color: white;
+            color: $logoFont;
+            height: 100%;
+            &.active{
+                background-color: $logoFont;
+                color: white;
+            }
+        }
+    }
+    .tab-inner{
+        height: 100%;
+        width: 100%;
+        .tab-panel {
+            height: 502px;
+            display: none;
+            .content-box{
+                overflow-y: auto;
+                height: 472px;
+                position: relative;
+                margin-top: 30px;
+                color: white;
+                .user-interaction{
+                    height: 16.6%;
+                    display: flex;
+                    position: relative;
+                    padding: 16px;
+                    justify-content: flex-start;
+                    align-items: center;
+                    gap: 10px;
+                    width: 95%;
+                    margin-top: 15px;
+                    background: #7456D0;
+                    border-radius: 15px;
+                    .avatar{
+                        display: flex;
+                        width: 48px;
+                        height: 48px;
+                        overflow: hidden;
+                        position: relative;
+                        img{
+                            width: 100%;
+                            height: 100%;
+                            object-fit: cover;
+                        }
+                    }
+                    .pseudo-status{
+                        display: flex;
+                        position: relative;
+                        flex-direction: column;
+                        width: 70%;
+                        &-message{
+                            font-family: 'Plus Jakarta Sans',sans-serif;
+                            opacity: 0.87;
+                            font-style: normal;
+                            font-weight: 400;
+                            font-size: 14px;
+                            line-height: 18px;
+                        }
+
+                        p{
+                            margin: 0;
+                            padding: 0;
+                        }
+                    }
+                    .pseudo-status-inner{
+                        justify-content: flex-start;
+                        display: flex;
+                        align-items: center;
+                        .status-true{
+                            width: 8px;
+                            margin-right: 5px;
+                            height: 8px;
+                            border-radius: 8px;
+                            background-color: #44BBA4;
+                        }
+                        .status-false{
+                            width: 8px;
+                            margin-right: 2px;
+                            height: 8px;
+                            border-radius: 8px;
+                            background-color: #FF00FF    ;
+                        }
+                        .pseudo{
+                            margin: 0;
+                            font-family: 'Plus Jakarta Sans',sans-serif;
+                            font-style: normal;
+                            font-weight: 500;
+                            font-size: 16px;
+                            opacity: 0.87;
+                            line-height: 20px;
+                        }
+                    }
+                }
+                &::-webkit-scrollbar {
+                    width: 6px;
+                    height: 100%;
+                }
+                &::-webkit-scrollbar-thumb {
+                    height: 10px;
+                    background: #7456D0;
+                    border-radius: 50px;
+
+                }
+            }
+        }
+
+        .tab-panel.active {
+            display: block;
+        }
+    }
+}

@@ -1,0 +1,8 @@
+@import '../../scss/App';
+
+.settings-icon:hover path, .settings-icon:hover circle {
+    stroke: $logoFont;
+}
+.settings-icon-fill:hover path, .settings-icon-fill:hover circle {
+    fill: $logoFont;
+}

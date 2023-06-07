@@ -9,3 +9,13 @@ frontend/node_modules/
 venv/
 backend/backend/settings.py
 backend/backend/__pycache__
+backend/blogs/__pycache__/
+backend/blogs/migrations/
+backend/common/__pycache__/
+backend/friends/__pycache__/
+backend/games/__pycache__/
+backend/messaging/__pycache__/
+backend/users/__pycache__/
+frontend/.gitignore
+frontend/node_modules/
+frontend/dist/

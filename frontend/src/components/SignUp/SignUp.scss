@@ -6,7 +6,7 @@
     justify-content:center;
     padding: 0;
     border: none;
-    min-height: 500px;
+    min-height: 638px;
     flex-direction: column;
     h3{
         text-align: center;
@@ -16,10 +16,121 @@
         font-size: 24px;
         line-height: 33px;
         color: $logoFont;
-        margin-top: 80px;
-        margin-bottom: 60px;
+        margin-top: 33px;
+        margin-bottom: 33px;
+    }
+    .orLine {
+        position: relative;
+        height: 28px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        p {
+            color:#828282;
+            font-family: Open-Sans, sans-serif ;
+            padding: 0 5px;
+            text-align: center;
+            margin-top: auto;
+            font-weight: 400;
+            font-size: 14px;
+            z-index: 2;
+            background: white;
+        }
+        &::after {
+            content: "";
+            height: 1px;
+            width: 50%;
+            background-color: #828282;
+            display: block;
+            position: absolute;
+            z-index: 1;
+            bottom: 60%;
+        }
+    }
+    .verifChosegame{
+        margin: 30px auto;
+        display: flex;
+        width: 90%;
+        justify-content: space-evenly;
+        justify-self: center;
+        flex-wrap: wrap;
+        height: 20%;
+        .verifGame{
+            width: 90px;
+            height: 90px;
+            margin: 3px;
+            cursor: pointer;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border-radius: 15px;
+            img{
+                width: 70px;
+                height: 70px;
+                border-radius: 10px;
+            }
+        }
+    }
+
+    .chosegame{
+        display: flex;
+        width: 65%;
+        margin: auto;
+        justify-content: space-evenly;
+        justify-self: center;
+        flex-wrap: wrap;
+        height: 100%;
+
+        .game{
+            margin: 7px;
+            width: 90px;
+            height: 90px;
+            cursor: pointer;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border-radius: 15px;
+            transition: border-color 0.4s ease-in-out, box-shadow 0.3s ease-in-out;
+            &:hover {
+                border-color: #2d4373;
+            }
+            &.selected {
+                border-color: #2d4373;
+                box-shadow: 0 0 8px rgba(45, 67, 115, 0.5);
+                transition: border-color 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+            }
+            img{
+                width: 70px;
+                height: 70px;
+                border-radius: 10px;
+            }
+        }
     }
 }
+.verifContainer{
+    .verifData{
+        height: 40px;
+        display: flex;
+        font-size: 14px;
+        align-items: center;
+        margin-left: 30px;
+        text-align: center;
+        h4{
+            span{
+                font-weight: normal;
+                color: #9795B5;
+                margin-left: 10px;
+            }
+            font-weight: bold;
+            color:$logoFont ;
+            font-size: 14px;
+            display: flex;
+            margin-right: 5px;
+            text-align: center;
+        }
+    }
+}
+
 .input-icon-container{
     .input-without-icon{
         padding-left: 15px;
@@ -28,7 +139,7 @@
         border: 1px solid #D0D0D0;
         width:90%;
         &:focus {
-        outline-color: $logoFont;
+            outline-color: $logoFont;
         }
         &.error {
             border-color: #ff1a1a;;
@@ -36,5 +147,15 @@
                 color: #ff1a1a;;
             }
         }
+    }
+    position: relative;
+    .eye-icon {
+        position: absolute;
+        color: #828282;
+        font-size: 20px;
+        right: 12%;
+        top: 50%;
+        transform: translateY(-50%);
+        cursor: pointer;
     }
 }

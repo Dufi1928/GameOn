@@ -1,0 +1,89 @@
+@import '../../scss/App';
+
+.footer{
+    width: 100%;
+    .footer-container {
+        display: flex;
+        justify-content: space-between;
+        .column {
+            flex: 1;
+            padding: 10px;
+            justify-content: center;
+
+            h3 {
+                height: 20px;
+                text-align: center;
+                margin-bottom: 25px;
+                color: $myPrimaryTitle;
+                font-family: 'DM Sans', sans-serif;
+                font-style: normal;
+                font-weight: 700;
+                font-size: 20px;
+                line-height: 20px;
+            }
+
+            ul {
+                list-style-type: none;
+                padding: 0;
+            }
+
+            li {
+                font-family: 'DM Sans', sans-serif;
+                font-style: normal;
+                height: 18px;
+                font-weight: normal;
+                font-size: 18px;
+                text-align: center;
+                line-height: 18px;
+                color: $myPrimaryTitle !important;
+                margin-bottom: 15px;
+            }
+        }
+    }
+    .container{
+        hr {
+            color: white;
+        }
+    }
+    .logo-copyright{
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        .footer-logo {
+            align-content: center;
+            flex-direction: column;
+            font-family: 'Mars', serif;
+            font-style: normal;
+            font-weight: 400;
+            font-size: 39px;
+            width:20%;
+            gap: 13px;
+
+            .logo-top{
+                text-align: left;
+                padding-left: 18%;
+            }
+
+            .logo-bottom{
+                text-align: right;
+                padding-right: 18%;
+                margin-bottom: 25px;
+            }
+            h2{
+                padding-bottom:0;
+                margin-bottom:0;
+                line-height: 30px;
+                color: $logoFont;
+            }
+        }
+        .copyright{
+            font-family: 'DM Sans', sans-serif;
+            font-style: normal;
+            font-weight: normal;
+            font-size: 18px;
+            line-height: 18px;
+            color: $myPrimaryText;
+        }
+
+    }
+}
