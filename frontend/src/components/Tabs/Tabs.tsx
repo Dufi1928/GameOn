@@ -9,6 +9,7 @@ interface TabsProps {
     setReceiverId: React.Dispatch<React.SetStateAction<string | null>>;
     setWs: React.Dispatch<React.SetStateAction<ReconnectingWebSocket | null>>;
     setNewMessage: React.Dispatch<React.SetStateAction<Message[]>>;
+    searchValue: string;
 }
 interface Message {
     sender: string;
@@ -25,7 +26,7 @@ interface Message {
     sender_id: string;
 }
 
-const Tabs: React.FC<TabsProps> = ({ setReceiverId, setWs, setNewMessage }) => {
+const Tabs: React.FC<TabsProps> = ({ setReceiverId, searchValue,  setWs, setNewMessage }) => {
     const [activeTab, setActiveTab] = useState<string>('Tab2');
 
     return (
@@ -42,7 +43,7 @@ const Tabs: React.FC<TabsProps> = ({ setReceiverId, setWs, setNewMessage }) => {
                         Hello
                     </TabPanel>
                     <TabPanel isActive={activeTab === 'Tab2'}>
-                        <MessagesPanel setReceiverId={setReceiverId} setWs={setWs} setNewMessage={setNewMessage} />
+                        <MessagesPanel setReceiverId={setReceiverId} searchValue={searchValue}  setWs={setWs} setNewMessage={setNewMessage} />
                     </TabPanel>
                     <TabPanel isActive={activeTab === 'Tab3'}>
                         {/* ... contenu du Tab3 ... */}

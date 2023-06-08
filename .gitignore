@@ -19,3 +19,4 @@ backend/users/__pycache__/
 frontend/.gitignore
 frontend/node_modules/
 frontend/dist/
+backend/users/migrations/__pycache__/0010_user_short_description.cpython-311.pyc

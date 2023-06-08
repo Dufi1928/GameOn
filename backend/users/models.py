@@ -12,6 +12,7 @@ class User(AbstractUser):
     small_size_avatar = models.CharField(max_length=100, blank=True, null=True)
     big_size_avatar = models.CharField(max_length=100, blank=True, null=True)
     favorite_games = models.ManyToManyField(Game, limit_choices_to=5, blank=True)
+    short_description = models.CharField(max_length=255, blank=True, null=True)
     pseudo = models.CharField(max_length=100, null=True)
     friends = models.ManyToManyField("self", blank=True)
     age = models.IntegerField(null=True)

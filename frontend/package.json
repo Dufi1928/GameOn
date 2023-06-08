@@ -34,6 +34,7 @@
     "react-input-emoji": "^5.0.2",
     "react-router-dom": "^6.11.1",
     "reconnecting-websocket": "^4.4.0",
+    "simplebar": "^6.2.5",
     "socket.io-client": "^4.6.1",
     "util": "^0.12.5"
   },

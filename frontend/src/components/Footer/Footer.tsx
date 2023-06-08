@@ -25,7 +25,7 @@ class Footer extends Component {
                 'ContactUs',
                 'Careers',
                 'Culture',
-                'Blog',
+                'BlogList',
             ],
         },
         {

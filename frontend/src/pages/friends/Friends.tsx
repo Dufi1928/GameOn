@@ -7,6 +7,8 @@ import Header from '../../components/Header/Header.tsx';
 import Footer from '../../components/Footer/Footer.tsx';
 import "./Friends.scss"
 import Cookies from 'js-cookie';
+import { useNavigate } from 'react-router-dom';
+
 
 interface Friend {
     id: number;
@@ -26,6 +28,13 @@ interface DecodedJWT {
 const Friends: FC = () => {
     const [friends, setFriends] = useState<Friend[]>([]);
     const [userId, setUserId] = useState<number | null>(null);
+
+    const navigate = useNavigate();
+
+    const handleCardClick = (id: number) => {
+        navigate(`/user/${id}`);
+    };
+
 
     useEffect(() => {
         const token = Cookies.get('jwt');
@@ -55,7 +64,7 @@ const Friends: FC = () => {
             <Header/>
             <div className="pageWrapper">
                 {friends.map(friend => (
-                    <div className="userCard" key={friend.id}>
+                    <div className="userCard"  key={friend.id}  onClick={() => handleCardClick(friend.id)}>
                         <p className="pseudo">{friend.pseudo}</p>
                         <div className="hoverBox">
                             <p >{friend.pseudo}</p>
@@ -63,7 +72,6 @@ const Friends: FC = () => {
                             <p >{friend.age}</p>
                         </div>
                         {friend.online ? <p className="status">Connecté</p> : <p className="status">offline</p>}
-
                         <img src={friend.big_size_avatar} alt=""/>
                     </div>
                 ))}

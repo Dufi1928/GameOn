@@ -28,3 +28,15 @@ class BlogList(APIView):
             blogs = Blog.objects.annotate(num_comments=Count('comments')).order_by('-num_comments')[:20]
             serializer = BlogSerializer(blogs, many=True)
             return Response(serializer.data, status=status.HTTP_200_OK)
+
+
+class GetBlog(APIView):
+
+    def post(self, request):
+        blog_id = request.data.get('id')
+        try:
+            blog = Blog.objects.get(id=blog_id)
+            serializer = BlogSerializer(blog)
+            return Response(serializer.data)
+        except Blog.DoesNotExist:
+            return Response({'error': 'Blog not found'}, status=404)

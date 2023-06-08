@@ -1,4 +1,4 @@
-import { useEffect, useReducer, useState } from 'react';
+import { useEffect, useReducer, useState, useRef } from 'react';
 import './Header.scss';
 import axios from 'axios';
 import { useNavigate, Link, useLocation } from "react-router-dom";
@@ -6,22 +6,30 @@ import HelpIcon from '../Icons/HelpIson.tsx';
 import SettingsIcon from '../Icons/Settings.tsx';
 import UserIcon from '../Icons/UserIcon.tsx';
 import SignOut from '../Icons/SignOut.tsx';
+import Notification from '../Notification/Notification.tsx';
+import { IoMdNotificationsOutline } from 'react-icons/io';
 
 const initialState = {
     userId: 0,
     isLoggedIn: false,
     socket: null,
+    notif: false,
+    notifData: {},
 };
 
 type State = {
     userId: number;
     isLoggedIn: boolean;
     socket: WebSocket | null;
+    notif: boolean;
+    notifData: any;
 };
 
 type Action =
     | { type: "SETISLOGEDIN"; value: boolean }
-    | { type: "SETUSERID"; value: number };
+    | { type: "SETUSERID"; value: number }
+    | { type: "SETNOTIF"; value: boolean }
+    | { type: "SETNOTIFDATA"; value: any };
 
 const reducer = (state: State, action: Action) => {
     switch (action.type) {
@@ -29,6 +37,10 @@ const reducer = (state: State, action: Action) => {
             return { ...state, isLoggedIn: action.value };
         case "SETUSERID":
             return { ...state, userId: action.value };
+        case "SETNOTIF":
+            return { ...state, notif: action.value };
+        case "SETNOTIFDATA":
+            return { ...state, notifData: action.value };
         default:
             return state;
     }
@@ -36,11 +48,15 @@ const reducer = (state: State, action: Action) => {
 
 function Header() {
     const [state, dispatch] = useReducer(reducer, initialState);
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
     const [socket, setSocket] = useState<WebSocket | null>(null);
     const navigate = useNavigate();
     const location = useLocation();
     const [showDropdown, setShowDropdown] = useState(false);
-
+    const [showNotification, setShowNotification] = useState(false);
+    const notificationRef = useRef<HTMLDivElement>(null);
+    const notificationClicked = useRef(false);
     const isCurrentPath = (path: string) => {
         return location.pathname === path;
     };
@@ -60,7 +76,39 @@ function Header() {
             }
         };
 
+        const checkNotification = async () => {
+            try {
+                const response = await axios.get(
+                    "https://localhost:8000/api/notifications",
+                    { withCredentials: true }
+                );
+                if (Object.keys(response.data).length > 0) {
+                    dispatch({ type: 'SETNOTIF', value: true });
+                    dispatch({ type: 'SETNOTIFDATA', value: response.data });
+                } else {
+                    dispatch({ type: 'SETNOTIF', value: false });
+                }
+            } catch (error) {
+                console.error(error);
+                dispatch({ type: 'SETNOTIF', value: false });
+            }
+        };
         checkLoggedInStatus();
+        checkNotification();
+        const handleClickOutside = (event: MouseEvent) => {
+            if (
+                notificationRef.current &&
+                !notificationRef.current.contains(event.target as Node) &&
+                !(event.target instanceof HTMLElement && event.target.classList.contains("notification-icon"))
+            ) {
+                setShowNotification(false);
+            }
+        };
+        document.addEventListener('mousedown', handleClickOutside);
+        return () => {
+            // Clean up the listeners when the component unmounts
+            document.removeEventListener('mousedown', handleClickOutside);
+        };
     }, []);
 
     useEffect(() => {
@@ -68,7 +116,6 @@ function Header() {
             const newSocket = new WebSocket('wss://localhost:8001/ws/');
 
             newSocket.onopen = () => {
-                // console.log('WebSocket connection opened');
                 const data = {
                     user_id: state.userId
                 };
@@ -78,7 +125,7 @@ function Header() {
             newSocket.onmessage = (event) => {
                 const data = JSON.parse(event.data);
                 if (data.ping) {
-                    newSocket.send(JSON.stringify({ pong: true })); // Envoie le pong au serveur
+                    newSocket.send(JSON.stringify({ pong: true }));
                 }
             };
 
@@ -128,18 +175,25 @@ function Header() {
         setShowDropdown(false);
     };
 
+    const handleNotificationClick = (event: React.MouseEvent<HTMLDivElement>) => {
+        event.stopPropagation();
+        setShowNotification((prevState) => !prevState);
+        notificationClicked.current = true;
+    };
+
+
     return (
         <div className="container">
             <header>
                 <nav className="nav-left">
                     <Link className={`navLink ${isCurrentPath("/") ? "current" : ""}`} to="/">Home</Link>
-                    {/*<Link className={`navLink ${isCurrentPath("/games") ? "current" : ""}`} to="/games">Games</Link>*/}
-                    <Link className={`navLink ${isCurrentPath("/Messages") ? "current" : ""}`} to="/Messages">Message</Link>
-                    {/*<Link className={`navLink ${isCurrentPath("/Contact") ? "current" : ""}`} to="/Contact">Contact</Link>*/}
+                    {state.isLoggedIn && (
+                        <Link className={`navLink ${isCurrentPath("/Messages") ? "current" : ""}`} to="/Messages">Message</Link>
+                    )}
                     {state.isLoggedIn ? (
                         <Link className={`navLink ${isCurrentPath("/Friends") ? "current" : ""}`} to="/Friends">Friends</Link>
                     ) : null}
-                    <Link className={`navLink ${isCurrentPath("/Blog") ? "current" : ""}`} to="/Blog">Blog</Link>
+                    <Link className={`navLink ${isCurrentPath("/BlogList") ? "current" : ""}`} to="/Blog">Blog</Link>
                 </nav>
                 <div className="logo-container">
                     <h2 className="logo-top">Game</h2>
@@ -147,8 +201,7 @@ function Header() {
                 </div>
                 <nav className="nav-right">
                     <Link className={`navLink ${isCurrentPath("/usecase") ? "current" : ""}`} to="/usecase">Serveur</Link>
-                    <Link className={`navLink ${isCurrentPath("/solutions") ? "current" : ""}`} to="/solutions">Guid</Link>
-
+                    <Link className={`navLink ${isCurrentPath("/guides") ? "current" : ""}`} to="/guides">Guid</Link>
                     {state.isLoggedIn && (
                         <Link className={`navLink ${isCurrentPath("/account") ? "current" : ""}`} to="/account">Room</Link>
                     )}
@@ -156,13 +209,23 @@ function Header() {
                         <Link className={`navLink ${isCurrentPath("/login") ? "current" : ""}`} to="/login">Login</Link>
                     )}
                     {state.isLoggedIn && (
-                        <div className="usericon" onMouseEnter={handleUserIconHover} onMouseLeave={handleUserIconLeave}>
+                        <div className={state.notif ? "notification-icon notif" : "notification-icon"} onClick={handleNotificationClick}>
+                            <IoMdNotificationsOutline className={state.notif ? "with-notif" : "without-notif"} />
+                            {showNotification && (
+                                <div className="notif-wrapper" ref={notificationRef} onClick={e => e.stopPropagation()}>
+                                    <Notification notifications={state.notifData} />
+                                </div>
+                            )}
+                        </div>
+                    )}
+                    {state.isLoggedIn && (
+                        <div className="user-icon" onMouseEnter={handleUserIconHover} onMouseLeave={handleUserIconLeave}>
                             <img src="/img/userTest.png" alt="" />
                             {showDropdown && (
-                                <div  className="dropdown">
-                                    <SettingsIcon/>
+                                <div className="dropdown">
+                                    <SettingsIcon />
                                     <HelpIcon />
-                                    <UserIcon/>
+                                    <UserIcon />
                                     <div>
                                         <SignOut handleLogout={handleLogout} />
                                     </div>

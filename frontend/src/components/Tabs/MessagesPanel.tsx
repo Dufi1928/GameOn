@@ -26,9 +26,10 @@ interface MessagesPanelProps {
     setReceiverId: React.Dispatch<React.SetStateAction<string | null>>;
     setWs: React.Dispatch<React.SetStateAction<ReconnectingWebSocket | null>>;
     setNewMessage: React.Dispatch<React.SetStateAction<Message[]>>;
+    searchValue: string;
 }
 
-const MessagesPanel: React.FC<MessagesPanelProps> = ({ setReceiverId,setNewMessage, setWs,  }) => {
+const MessagesPanel: React.FC<MessagesPanelProps> = ({ setReceiverId, searchValue, setNewMessage, setWs,  }) => {
     const [messages, setMessages] = useState<Message[]>([]);
     const [userID, setUserID] = useState<string | null>(null);
     const [firstConnection, setFirstConnection] = useState<boolean | false>(false);
@@ -77,8 +78,6 @@ const MessagesPanel: React.FC<MessagesPanelProps> = ({ setReceiverId,setNewMessa
                     }
                 });
                 if (!firstConnection) {
-                    const sortedData = messageData.sort((a: Message, b: Message) => new Date(a.timestamp).getTime() - new Date(b.timestamp).getTime());
-                    console.log(sortedData)
                     setReceiverId(messageData[0].receiver_id !== userID ? messageData[0].receiver_id : messageData[0].sender_id);
                     setFirstConnection(true);
                 }
@@ -101,7 +100,10 @@ const MessagesPanel: React.FC<MessagesPanelProps> = ({ setReceiverId,setNewMessa
 
     return (
         <div className="content-box">
-            {messages.sort((a, b) => new Date(a.timestamp).getTime() - new Date(b.timestamp).getTime()).reverse().map((message, index) => (
+            {messages.filter((message) => {
+                const pseudo = message.receiver_id === userID ? message.sender : message.receiver;
+                return pseudo.toLowerCase().includes(searchValue.toLowerCase());
+            }).sort((a, b) => new Date(a.timestamp).getTime() - new Date(b.timestamp).getTime()).reverse().map((message, index) => (
                 <div onClick={() => setReceiverId(message.receiver_id !== userID ? message.receiver_id : message.sender_id)} className="user-interaction" key={index}>
                     <div className="avatar">
                         <img src={message.receiver_id === userID ? message.sender_avatar : message.receiver_avatar} alt="" />

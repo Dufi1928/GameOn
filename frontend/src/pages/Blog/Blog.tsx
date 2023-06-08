@@ -6,6 +6,20 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import { format } from 'date-fns';
 import Header from '../../components/Header/Header';
 import Footer from '../../components/Footer/Footer';
+import { useParams } from "react-router-dom";
+import { MdOutlineDateRange, MdOutlineMessage } from "react-icons/md";
+
+interface Comment {
+    id: number;
+    author: Author;  // not Author[]
+    content: string;
+    created_at: string;
+}
+
+interface Author {
+    pseudo: string;
+    avatar: string;
+}
 
 interface BlogPost {
     id: number;
@@ -14,82 +28,80 @@ interface BlogPost {
     large_photo: string;
     content: string;
     created_at: string;
+    small_photo: string;
+    comments: Comment[];
 }
+
 
 const Blog: React.FC = () => {
     const [blogPosts, setBlogPosts] = useState<BlogPost[]>([]);
-    const [searchTerm, setSearchTerm] = useState('');
+    const { id } = useParams<{id: string}>();// accessing id from URL parameters
 
     useEffect(() => {
-        const fetchBlogPosts = async () => {
+        const fetchBlogPost = async () => {
             try {
-                const response = await axios.get('https://localhost:8000/api/blogList/', {
-                    withCredentials: true,
-                });
-                setBlogPosts(response.data);
+                const response = await axios.post('https://localhost:8000/api/blog',
+                    { id }, // sending id in the body of the request
+                    { withCredentials: true },
+                );
+                console.log(response.data);
+                setBlogPosts([response.data]); // wrap the data into array since your state expects an array
+                console.log(blogPosts)
             } catch (error) {
-                console.error('Failed to fetch blog posts:', error);
+                console.error(`Failed to fetch blog post with id ${id}:`, error);
             }
         };
 
-        fetchBlogPosts();
-    }, []);
+        fetchBlogPost();
+    }, [id]);
 
     const formatDate = (dateString: string) => {
         const date = new Date(dateString);
         return format(date, 'MMMM dd, yyyy');
     };
 
-    const handleSearch = (event: React.ChangeEvent<HTMLInputElement>) => {
-        setSearchTerm(event.target.value);
-    };
-
-    const filteredBlogPosts = blogPosts.filter((post) =>
-        post.title.toLowerCase().includes(searchTerm.toLowerCase())
-    );
 
     return (
-        <div className="pblog-age">
+        <div className="container">
             <Header />
-            <div className="blogExemple">
-                <div className="leftSideBlogExample">
-                    <h3>
-                        Le phénomène de l'eSport : League of Legends au sommet de la compétition mondiale !
-                    </h3>
-                    <p>
-                        Plongez dans l'univers compétitif de League of Legends, où les joueurs deviennent des légendes de l'eSport. Des affrontements épiques, des stratégies élaborées et ...
-                    </p>
-                    <button>
-                        Lire la suite
-                    </button>
-                </div>
-
-                <div className="rightSideBlogExample">
-                    <div className="imageBox">
-                        <img src="/img/Blog.png" alt=""/>
-                    </div>
-                </div>
-
-            </div>
-
-
-            <div className="searchBar">
-                {/*<input type="text" placeholder="Search..." value={searchTerm} onChange={handleSearch} />*/}
-            </div>
-            <div className="pageWrapper">
-                {filteredBlogPosts.map((post) => (
-                    <div key={post.id} className="blogCard">
-                        <div className="cardInner">
-                            <p className="blogTitle">{post.title}</p>
-                            <p className="blogDate">
-                                {formatDate(post.created_at)}
-                                {post.num_comments !== 0 && (
-                                    <span>   {post.num_comments} {post.num_comments === 1 ? ' comment' : ' comments'}</span>
-                                )}
-                            </p>
-                            <div className="cardImgBox">
-                                <img src={post.large_photo} alt="" />
+            <div className="unique-blog-page">
+                {blogPosts.map((post) => (
+                    <div key={post.id}>
+                        <div className="photo-container">
+                            <img src={post.large_photo} alt=""/>
+                        </div>
+                        <div className="title-container">
+                            <h1>{post.title}</h1>
+                            <div className="title-futter">
+                                <MdOutlineDateRange className="title-futter-icon"/>
+                                <span>{formatDate(post.created_at)}</span>
+                                <MdOutlineMessage className="title-futter-icon"/>
+                                <span>{post.comments.length}</span>
                             </div>
+                        </div>
+                        <div className="content-container" dangerouslySetInnerHTML={{ __html: post.content }} />
+                        <div className="comments-container">
+                            {post.comments && post.comments.slice(-5).map((comment) => (
+                                <>
+                                    <div className="comment-container-box" key={comment.id}>
+                                        <div className="user-info-box">
+                                            <div className="comment-ava-box">
+                                                <img src={comment.author.avatar} alt=""/>
+                                            </div>
+                                            <div className="pseudo-box">
+                                                <h2>{comment.author.pseudo}</h2>
+                                            </div>
+                                        </div>
+                                        <div className="comment-box">
+                                            <div className="comment-content">
+                                                <p>{comment.content}</p>
+                                                <p className="metadata"><MdOutlineDateRange className="title-futter-icon"/> {formatDate(comment.created_at)}</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </>
+
+                            ))}
                         </div>
                     </div>
                 ))}
@@ -100,3 +112,8 @@ const Blog: React.FC = () => {
 };
 
 export default Blog;
+
+
+// <img src={post.large_photo} alt={post.title} />
+//                     <p>{post.content}</p>
+//                     <p>Posted on: {formatDate(post.created_at)}</p>

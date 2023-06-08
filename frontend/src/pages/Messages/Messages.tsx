@@ -12,10 +12,13 @@ import { FaRegPlusSquare } from "react-icons/fa";
 import { format, formatDistanceToNow, parse, parseISO,addHours} from 'date-fns';
 import React, { useEffect, useState, useRef } from "react";
 import axios from "axios";
+import { useParams } from "react-router-dom";
 import jwt_decode, { JwtPayload } from "jwt-decode";
 import ReconnectingWebSocket from "reconnecting-websocket";
 import Cookies from "js-cookie";
 import { fr } from 'date-fns/locale';
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-ignore
 import InputEmoji from 'react-input-emoji'
 
 interface InterlocutorData {
@@ -55,6 +58,13 @@ const Messages: React.FC = () => {
     const [newMessage, setNewMessage] = useState<Message[]>([]);
     const messagesBoxRef = useRef<null | HTMLDivElement>(null);
     const messagesEndRef = useRef<null | HTMLDivElement>(null);
+    const [firstConnect, setFirstConnect] = useState<boolean | true>(true);
+    const { id } = useParams();
+    const [searchValue, setSearchValue] = useState("");
+
+    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setSearchValue(e.target.value);
+    };
 
     const handleSendMessage = () => {
         if (ws && receiverId && userID) {
@@ -100,6 +110,13 @@ const Messages: React.FC = () => {
     }, []);
 
     useEffect(() => {
+        if (firstConnect && id && receiverId) {
+            setReceiverId(id);
+            setFirstConnect(false);
+        }
+    }, [firstConnect, id, receiverId]);
+
+    useEffect(() => {
         scrollToBottom();
         console.log(currentMessages)
     }, [currentMessages]);
@@ -143,6 +160,7 @@ const Messages: React.FC = () => {
         fetchData();
     }, [receiverId]);
 
+
     useEffect(() => {
         if (interlocutorData) {
             const fetchMessages = async () => {
@@ -168,10 +186,10 @@ const Messages: React.FC = () => {
                 <div className="page-inner">
                     <div className="messages-left-side">
                         <div className="message-searsh">
-                            <IoSearch className="input-icon" />
-                            <input className="searsh" placeholder="Search or start a new chat" type="search" />
+                            <IoSearch className="input-icon"  />
+                            <input className="searsh" onChange={handleChange} placeholder="Search or start a new chat" type="text" />
                             <div className="tabs">
-                                <Tabs setReceiverId={setReceiverId} setNewMessage={setNewMessage} setWs={setWs} />
+                                <Tabs setReceiverId={setReceiverId} searchValue={searchValue} setNewMessage={setNewMessage} setWs={setWs} />
                             </div>
                         </div>
                     </div>

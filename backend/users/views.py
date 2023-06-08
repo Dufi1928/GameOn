@@ -10,7 +10,9 @@ from django.contrib.auth.hashers import make_password
 
 from .models import User
 from games.models import Game
+from .serializers import GetUserSerializer
 from .serializers import UserSerializer
+from .serializers import GetUserPseudosSerializer
 
 
 def generate_jwt(user):
@@ -263,3 +265,24 @@ class LogoutView(APIView):
             'message': 'User logged out'
         }
         return response
+
+
+class UserDetail(APIView):
+    def get(self, request, user_id, format=None):
+        if user_id is not None:
+            try:
+                user = User.objects.get(pk=user_id)
+                serializer = GetUserSerializer(user)
+                return Response(serializer.data)
+            except User.DoesNotExist:
+                return Response({"error": "User not found"}, status=status.HTTP_404_NOT_FOUND)
+        else:
+            return Response({"error": "No id provided"}, status=status.HTTP_400_BAD_REQUEST)
+
+
+class GetUsersNotif(APIView):
+    def post(self, request):
+        user_ids = request.data.get('senders', [])
+        users = User.objects.filter(id__in=user_ids)
+        serializer = GetUserPseudosSerializer(users, many=True)
+        return Response(serializer.data)
