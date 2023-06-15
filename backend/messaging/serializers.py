@@ -11,12 +11,18 @@ class UserSerializer(serializers.ModelSerializer):
         fields = ['id', 'pseudo', 'email', 'small_size_avatar', 'online']
 
 
+class UserSerializerWithPrivateKet(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = ['id', 'private_key']
+
+
 class MessageSerializer(serializers.ModelSerializer):
-    sender = UserSerializer(read_only=True)
+    sender = UserSerializerWithPrivateKet(read_only=True)
 
     class Meta:
         model = Message
-        fields = ['id', 'sender', 'receiver', 'content', 'timestamp', 'read']
+        fields = ['id', 'sender', 'receiver', 'encrypted_content_sender', 'encrypted_content_receiver', 'timestamp', 'read']
 
 
 class UserIDSerializer(serializers.ModelSerializer):
@@ -37,5 +43,4 @@ class MessageSerializerForUser(serializers.ModelSerializer):
 
     class Meta:
         model = Message
-        fields = ['id', 'sender_id', 'receiver_id', 'content', 'timestamp', 'read']
-
+        fields = ['id', 'sender_id', 'receiver_id', 'encrypted_content_sender', 'encrypted_content_receiver', 'timestamp', 'read']

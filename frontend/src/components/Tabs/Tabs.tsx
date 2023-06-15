@@ -15,6 +15,7 @@ interface Message {
     sender: string;
     receiver: string;
     content: string;
+    encrypted_content_sender: string;
     timestamp: string;
     read: boolean;
     sender_status: boolean;

@@ -8,6 +8,7 @@ import Blog from './pages/Blog/Blog.tsx';
 import Games from './pages/Games/Games';
 import Contact from './pages/Contact/Contact.tsx';
 import Guides from './pages/Guides/Guides.tsx';
+import Guide from './pages/Guide/Guide.tsx';
 import Messages from './pages/Messages/Messages.tsx';
 import Friends from './pages/friends/Friends.tsx';
 import User from './pages/User/User.tsx';
@@ -21,6 +22,7 @@ function App() {
                 <Route path="login" element={<Authentication />} />
                 <Route path="blog" element={<BlogList />} />
                 <Route path="guides" element={<Guides />} />
+                <Route path="guide/:id" element={<Guide />} />
                 <Route path="blog/:id" element={<Blog />} />
                 <Route path="games" element={<Games />} />
                 <Route path="/messages/:id?" element={<ProtectedRoute><Messages /></ProtectedRoute>} />

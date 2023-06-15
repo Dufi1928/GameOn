@@ -7,6 +7,7 @@ interface Message {
     sender: string;
     receiver: string;
     content: string;
+    encrypted_content_sender: string;
     timestamp: string;
     read: boolean;
     sender_status: boolean;
@@ -55,29 +56,31 @@ const MessagesPanel: React.FC<MessagesPanelProps> = ({ setReceiverId, searchValu
             ws.onmessage = (event) => {
                 const messageData = JSON.parse(event.data);
                 setNewMessage([messageData]);
-                setMessages((prevMessages) => {
-                    const existingMessageIndex = prevMessages.findIndex(
-                        (msg) =>
-                            (msg.sender_id === messageData.sender_id && msg.receiver_id === messageData.receiver_id) ||
-                            (msg.sender_id === messageData.receiver_id && msg.receiver_id === messageData.sender_id)
-                    );
+                if (messageData) {
+                    setMessages((prevMessages) => {
+                        const existingMessageIndex = prevMessages.findIndex(
+                            (msg) =>
+                                (msg.sender_id === messageData.sender_id && msg.receiver_id === messageData.receiver_id) ||
+                                (msg.sender_id === messageData.receiver_id && msg.receiver_id === messageData.sender_id)
+                        );
 
-                    // If a message from the same sender and receiver is already in state, replace it
-                    if (existingMessageIndex > -1) {
-                        // Un message du même expéditeur et destinataire existe déjà, nous mettons à jour le contenu
-                        const updatedMessages = [...prevMessages];
-                        updatedMessages[existingMessageIndex] = {
-                            ...prevMessages[existingMessageIndex],
-                            content: messageData.content, // Mise à jour du contenu du message
-                            timestamp: messageData.timestamp, // Mise à jour du contenu du message
-                        };
-                        return updatedMessages;
-                    } else {
-                        const newMessages = Array.isArray(messageData) ? [...messageData] : [messageData];
-                        return [...newMessages, ...prevMessages]; // Ajouter les nouveaux messages au début du tableau
-                    }
-                });
-                if (!firstConnection) {
+                        // If a message from the same sender and receiver is already in state, replace it
+                        if (existingMessageIndex > -1) {
+                            // Un message du même expéditeur et destinataire existe déjà, nous mettons à jour le contenu
+                            const updatedMessages = [...prevMessages];
+                            updatedMessages[existingMessageIndex] = {
+                                ...prevMessages[existingMessageIndex],
+                                content: messageData.content, // Mise à jour du contenu du message
+                                timestamp: messageData.timestamp, // Mise à jour du contenu du message
+                            };
+                            return updatedMessages;
+                        } else {
+                            const newMessages = Array.isArray(messageData) ? [...messageData] : [messageData];
+                            return [...newMessages, ...prevMessages]; // Ajouter les nouveaux messages au début du tableau
+                        }
+                    });
+                }
+                if (!firstConnection && messageData[0]) {
                     setReceiverId(messageData[0].receiver_id !== userID ? messageData[0].receiver_id : messageData[0].sender_id);
                     setFirstConnection(true);
                 }
@@ -101,24 +104,28 @@ const MessagesPanel: React.FC<MessagesPanelProps> = ({ setReceiverId, searchValu
     return (
         <div className="content-box">
             {messages.filter((message) => {
-                const pseudo = message.receiver_id === userID ? message.sender : message.receiver;
-                return pseudo.toLowerCase().includes(searchValue.toLowerCase());
+                if (message) {
+                    const pseudo = message.receiver_id === userID ? message.sender : message.receiver;
+                    return pseudo.toLowerCase().includes(searchValue.toLowerCase());
+                }
             }).sort((a, b) => new Date(a.timestamp).getTime() - new Date(b.timestamp).getTime()).reverse().map((message, index) => (
-                <div onClick={() => setReceiverId(message.receiver_id !== userID ? message.receiver_id : message.sender_id)} className="user-interaction" key={index}>
-                    <div className="avatar">
-                        <img src={message.receiver_id === userID ? message.sender_avatar : message.receiver_avatar} alt="" />
-                    </div>
-                    <div className="pseudo-status">
-                        <div className="pseudo-status-inner">
-                            <div
-                                className={`status-${message.receiver_id === userID ? message.sender_status : message.receiver_status ? 'true' : 'false'
-                                }`}
-                            ></div>
-                            <p className="pseudo">{message.receiver_id === userID ? message.sender : message.receiver}</p>
+                message && (
+                    <div onClick={() => setReceiverId(message.receiver_id !== userID ? message.receiver_id : message.sender_id)} className="user-interaction" key={index}>
+                        <div className="avatar">
+                            <img src={message.receiver_id === userID ? message.sender_avatar : message.receiver_avatar} alt="" />
                         </div>
-                        <p className="pseudo-status-message">{message.content.slice(0, 15)}</p>
+                        <div className="pseudo-status">
+                            <div className="pseudo-status-inner">
+                                <div
+                                    className={`status-${message.receiver_id === userID ? message.sender_status : message.receiver_status ? 'true' : 'false'
+                                    }`}
+                                ></div>
+                                <p className="pseudo">{message.receiver_id === userID ? message.sender : message.receiver}</p>
+                            </div>
+                            <p className="pseudo-status-message">{message.content.slice(0, 15)}</p>
+                        </div>
                     </div>
-                </div>
+                )
             ))}
         </div>
     );

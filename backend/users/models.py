@@ -16,6 +16,8 @@ class User(AbstractUser):
     pseudo = models.CharField(max_length=100, null=True)
     friends = models.ManyToManyField("self", blank=True)
     age = models.IntegerField(null=True)
+    public_key = models.TextField(null=True, blank=True)
+    private_key = models.TextField(null=True, blank=True)
 
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = []

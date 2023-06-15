@@ -3,6 +3,7 @@ import './Messages.scss';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Header from '../../components/Header/Header';
 import Footer from '../../components/Footer/Footer';
+import { Decrypter } from '../../components/Decrypter/Decrypter.tsx';
 import AudioRecorder from '../../components/AudioRecorder/AudioRecorder';
 import Tabs from '../../components/Tabs/Tabs';
 import { IoSearch } from "react-icons/io5";
@@ -13,6 +14,8 @@ import { format, formatDistanceToNow, parse, parseISO,addHours} from 'date-fns';
 import React, { useEffect, useState, useRef } from "react";
 import axios from "axios";
 import { useParams } from "react-router-dom";
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-ignore
 import jwt_decode, { JwtPayload } from "jwt-decode";
 import ReconnectingWebSocket from "reconnecting-websocket";
 import Cookies from "js-cookie";
@@ -20,6 +23,7 @@ import { fr } from 'date-fns/locale';
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
 import InputEmoji from 'react-input-emoji'
+
 
 interface InterlocutorData {
     id: number;
@@ -33,6 +37,8 @@ interface Message {
     sender: string;
     receiver: string;
     content: string;
+    encrypted_content_sender: string;
+    encrypted_content_receiver: string;
     timestamp: string;
     read: boolean;
     sender_status: boolean;
@@ -46,6 +52,8 @@ interface Message {
 
 interface MyJwtPayload extends JwtPayload {
     id?: string;
+    privet_key?: string;
+    hisPrivateKey?: string;
 }
 
 const Messages: React.FC = () => {
@@ -59,8 +67,10 @@ const Messages: React.FC = () => {
     const messagesBoxRef = useRef<null | HTMLDivElement>(null);
     const messagesEndRef = useRef<null | HTMLDivElement>(null);
     const [firstConnect, setFirstConnect] = useState<boolean | true>(true);
-    const { id } = useParams();
     const [searchValue, setSearchValue] = useState("");
+    const [myPrivateKey, setMyPrivateKey] = useState("");
+    const [hisPrivateKey, setHisPrivateKey] = useState("");
+    const { id } = useParams();
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setSearchValue(e.target.value);
@@ -85,12 +95,7 @@ const Messages: React.FC = () => {
     };
 
     useEffect(() => {
-        const jwt = Cookies.get('jwt');
-        if (jwt) {
-            const decodedJwt: MyJwtPayload = jwt_decode(jwt);
-            const userId = decodedJwt.id as string;
-            setUserID(userId);
-        }
+
         const elements = document.querySelectorAll('.react-input-emoji--button--icon');
 
         elements.forEach((element) => {
@@ -107,7 +112,35 @@ const Messages: React.FC = () => {
                 containerElement.parentNode.insertBefore(buttonElement, containerElement);
             }
         }
+        if (id){
+            setReceiverId(id);
+        }
     }, []);
+
+    useEffect(() => {
+        const fetchMyData = async () => {
+            const jwt = Cookies.get('jwt');
+            if (jwt) {
+                try {
+                    const decodedJwt = jwt_decode(jwt);
+                    const userId = decodedJwt.id as string;
+                    if (userId) {
+                        const response = await axios.post('https://localhost:8000/api/userinfo', {
+                            userId: userId,
+                        });
+                        const myPrivateKeyResponse = response.data['private_key'];
+                        setMyPrivateKey(myPrivateKeyResponse);
+                        setUserID(userId);
+                    }
+                } catch (error) {
+                    console.error('Erreur lors de l\'appel à l\'API:', error);
+                }
+            }
+        };
+
+        fetchMyData();
+    }, [id]);
+
 
     useEffect(() => {
         if (firstConnect && id && receiverId) {
@@ -116,9 +149,11 @@ const Messages: React.FC = () => {
         }
     }, [firstConnect, id, receiverId]);
 
+
+
+
     useEffect(() => {
         scrollToBottom();
-        console.log(currentMessages)
     }, [currentMessages]);
 
     useEffect(() => {
@@ -154,6 +189,15 @@ const Messages: React.FC = () => {
                 } catch (error) {
                     console.error('Erreur lors de l\'appel à l\'API:', error);
                 }
+                try {
+                    const response = await axios.post('https://localhost:8000/api/userinfo', {
+                        userId: receiverId,
+                    });
+                    const hisPrivateKeyResponse = response.data['private_key'];
+                    setHisPrivateKey(hisPrivateKeyResponse);
+                } catch (error) {
+                    console.error('Erreur lors de l\'appel à l\'API:', error);
+                }
             }
         };
 
@@ -169,7 +213,24 @@ const Messages: React.FC = () => {
                         interlocutor_id: interlocutorData.id
                     });
                     const messages = response.data.results;
-                    setCurrentMessages(messages);
+                    const decryptedMessages = await Promise.all(messages.map(async (message: Message) => {
+                        try {
+                            let key;
+                            let messageToDecript;
+                            if (message.sender_id === userID) {
+                                messageToDecript = message.encrypted_content_sender;
+                            } else {
+                                messageToDecript = message.encrypted_content_receiver;
+                            }
+                            const decryptedContent = await Decrypter(messageToDecript, myPrivateKey);
+                            return { ...message, content: decryptedContent };
+                        } catch (error) {
+                            console.error('Error during decryption:', error); // En cas d'erreur lors du déchiffrement, affichez l'erreur
+                            return message;
+                        }
+                    }));
+
+                    setCurrentMessages(decryptedMessages);
                 } catch (error) {
                     console.error('Erreur lors de la récupération des messages:', error);
                 }
@@ -177,7 +238,7 @@ const Messages: React.FC = () => {
 
             fetchMessages();
         }
-    }, [interlocutorData]);
+    }, [hisPrivateKey]);
 
     return (
         <div className="MessagesPage">

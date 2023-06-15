@@ -3,18 +3,31 @@ from rest_framework.response import Response
 from rest_framework.pagination import PageNumberPagination
 from django.contrib.auth import get_user_model
 from .serializers import UserSerializer
+from .serializers import UserSerializerWithPrivateKet
 from .models import Message
 from django.db.models import Q
 from .serializers import MessageSerializerForUser
 
 User = get_user_model()
 
-class UserInfoAPI(APIView):
+
+class UserResiverInfoApi(APIView):
     def post(self, request):
         reciver_id = request.data.get('reciver_id')
         try:
             user = User.objects.get(id=reciver_id)
             serializer = UserSerializer(user)
+            return Response(serializer.data)
+        except User.DoesNotExist:
+            return Response(status=404)
+
+
+class UserInfoAPI(APIView):
+    def post(self, request):
+        user_id = request.data.get('userId')
+        try:
+            user = User.objects.get(id=user_id)
+            serializer = UserSerializerWithPrivateKet(user)
             return Response(serializer.data)
         except User.DoesNotExist:
             return Response(status=404)

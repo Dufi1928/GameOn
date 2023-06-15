@@ -10,6 +10,7 @@ urlpatterns = [
     path('api/', include('friends.urls')),
     path('api/', include('blogs.urls')),
     path('api/', include('messaging.urls')),
+    path('api/', include('guides.urls')),
 ]
 
 

@@ -52,6 +52,7 @@ const Friends: FC = () => {
             axios.post(`https://localhost:8000/api/friends`, { user_id: userId })
                 .then(response => {
                     setFriends(response.data);
+                    console.log(response.data);
                 })
                 .catch(error => {
                     console.error('Une erreur s\'est produite lors de la récupération des amis !', error.response || error);

@@ -14,6 +14,15 @@ from .serializers import GetUserSerializer
 from .serializers import UserSerializer
 from .serializers import GetUserPseudosSerializer
 
+from cryptography.hazmat.primitives.asymmetric import rsa  # Import des fonctions pour générer des clés RSA
+from cryptography.hazmat.primitives.serialization import (  # Import des fonctions de sérialisation
+    Encoding,  # Encodage de la clé
+    PrivateFormat,  # Format de clé privée
+    PublicFormat,  # Format de clé publique
+    NoEncryption  # Aucun chiffrement de la clé
+)
+from cryptography.hazmat.backends import default_backend #Backend cryptographique par défaut pour les opérations cryptographiques.
+
 
 def generate_jwt(user):
     payload = {
@@ -72,6 +81,27 @@ class Register(APIView):
         elif user_with_pseudo:
             return Response({'error': 'User with this pseudo already exists'}, status=400)
         else:
+            # Générer la clé privée à partir du mot de passe
+            private_key = rsa.generate_private_key(
+                public_exponent=65537,
+                key_size=2048,
+                backend=default_backend()
+            )
+            # Sérialiser la clé privée au format PEM sans chiffrement
+            private_key_pem = private_key.private_bytes(
+                encoding=Encoding.PEM,
+                format=PrivateFormat.PKCS8,
+                encryption_algorithm=NoEncryption()
+            )
+            # Générer la clé publique correspondante
+            public_key = private_key.public_key()
+
+            # Sérialiser la clé publique au format PEM
+            public_key_pem = public_key.public_bytes(
+                encoding=Encoding.PEM,
+                format=PublicFormat.SubjectPublicKeyInfo
+            )
+
             hashed_password = make_password(password)
             user = User.objects.create(
                 username=first_name,
@@ -79,7 +109,9 @@ class Register(APIView):
                 pseudo=pseudo,
                 password=hashed_password,
                 first_name=first_name,
-                last_name=last_name
+                last_name=last_name,
+                public_key=public_key_pem.decode(),  # Stocker la clé publique dans la base de données
+                private_key=private_key_pem.decode()  # Stocker la clé privée dans la base de données
             )
             for game_id in games:
                 game = Game.objects.get(id=game_id)
@@ -253,7 +285,7 @@ class LogoutView(APIView):
         user = User.objects.get(id=user_id)
         user.online = False
         user.save()
-        if request.user.is_authenticated:
+        if request.user.is_authenticated :
             try:
                 print('User logged out')
 
