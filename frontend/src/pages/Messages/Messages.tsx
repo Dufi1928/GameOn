@@ -220,7 +220,7 @@ const Messages: React.FC = () => {
                             if (message.sender_id === userID) {
                                 messageToDecript = message.encrypted_content_sender;
                             } else {
-                                messageToDecript = message.encrypted_content_receiver;
+                                messageToDecript = message.encrypted_content_sender;
                             }
                             const decryptedContent = await Decrypter(messageToDecript, myPrivateKey);
                             return { ...message, content: decryptedContent };

@@ -45,6 +45,7 @@ class MessageConsumer(AsyncWebsocketConsumer):
             sender_id_to_save = text_data_json.get('sender_id')
             receiver_id_to_save = text_data_json.get('receiver_id')
             content_to_save = text_data_json.get('content')
+
             if sender_id_to_save and receiver_id_to_save and content_to_save:
                 sender = await sync_to_async(User.objects.get)(pk=sender_id_to_save)
                 receiver = await sync_to_async(User.objects.get)(pk=receiver_id_to_save)
