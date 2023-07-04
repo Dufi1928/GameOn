@@ -53,7 +53,7 @@ const Guide: React.FC = () => {
     useEffect(() => {
         const fetchGuide = async () => {
             try {
-                const response = await axios.get<GameGuide>("https://localhost:8000/api/guide", {
+                const response = await axios.get<GameGuide>("https://mygameon.pro:8000/api/guide", {
                     params: {
                         id: id // sending id as query parameter
                     },
@@ -96,7 +96,7 @@ const Guide: React.FC = () => {
                 </div>
             </div>
             <div className="caroussel">
-                <PhotoCarousel images={guide?.content_images} />
+                <PhotoCarousel images={guide?.content_images || []} />
             </div>
             <div className="unique-guide-page">
                 <div className="comments-container">

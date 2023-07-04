@@ -40,7 +40,7 @@ const Blog: React.FC = () => {
     useEffect(() => {
         const fetchBlogPost = async () => {
             try {
-                const response = await axios.post('https://localhost:8000/api/blog',
+                const response = await axios.post('https://mygameon.pro:8000/api/blog',
                     { id }, // sending id in the body of the request
                     { withCredentials: true },
                 );

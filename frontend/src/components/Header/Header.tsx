@@ -64,7 +64,7 @@ function Header() {
     useEffect(() => {
         const checkLoggedInStatus = async () => {
             try {
-                const response = await axios.get("https://localhost:8000/api/checkLoginView", {
+                const response = await axios.get("https://mygameon.pro:8000/api/checkLoginView", {
                     withCredentials: true,
                 });
                 if (response.data.status === 'logged in') {
@@ -79,7 +79,7 @@ function Header() {
         const checkNotification = async () => {
             try {
                 const response = await axios.get(
-                    "https://localhost:8000/api/notifications",
+                    "https://mygameon.pro:8000x`/api/notifications",
                     { withCredentials: true }
                 );
                 if (Object.keys(response.data).length > 0) {
@@ -113,7 +113,7 @@ function Header() {
 
     useEffect(() => {
         if (state.isLoggedIn && state.userId) {
-            const newSocket = new WebSocket('wss://localhost:8001/ws/');
+            const newSocket = new WebSocket('wss://mygameon.pro:8001/ws/');
 
             newSocket.onopen = () => {
                 const data = {
@@ -143,7 +143,7 @@ function Header() {
     const handleLogout = async () => {
         try {
             const response = await axios.post(
-                "https://localhost:8000/api/logout",
+                "https://mygameon.pro:8000/api/logout",
                 { user_id: state.userId },
                 {
                     withCredentials: true,

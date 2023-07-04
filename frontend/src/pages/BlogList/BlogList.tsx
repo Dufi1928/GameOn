@@ -29,7 +29,7 @@ const BlogList: React.FC = () => {
     useEffect(() => {
         const fetchBlogPosts = async () => {
             try {
-                const response = await axios.get('https://localhost:8000/api/blogList', {
+                const response = await axios.get('https://mygameon.pro:8000/api/blogList', {
                     withCredentials: true,
                 });
                 console.log(response.data);

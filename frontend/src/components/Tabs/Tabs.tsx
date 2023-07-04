@@ -16,7 +16,10 @@ interface Message {
     receiver: string;
     content: string;
     encrypted_content_sender: string;
+    encrypted_content_receiver: string;
     timestamp: string;
+    receiver_content: string;
+    sender_content: string;
     read: boolean;
     sender_status: boolean;
     receiver_status: boolean;
@@ -41,13 +44,13 @@ const Tabs: React.FC<TabsProps> = ({ setReceiverId, searchValue,  setWs, setNewM
 
                 <div className="tab-inner">
                     <TabPanel isActive={activeTab === 'Tab1'}>
-                        Hello
+                        {/* ... content Tab1 ... */}
                     </TabPanel>
                     <TabPanel isActive={activeTab === 'Tab2'}>
                         <MessagesPanel setReceiverId={setReceiverId} searchValue={searchValue}  setWs={setWs} setNewMessage={setNewMessage} />
                     </TabPanel>
                     <TabPanel isActive={activeTab === 'Tab3'}>
-                        {/* ... contenu du Tab3 ... */}
+                        {/* ... content Tab3 ... */}
                     </TabPanel>
                 </div>
             </div>
@@ -56,3 +59,8 @@ const Tabs: React.FC<TabsProps> = ({ setReceiverId, searchValue,  setWs, setNewM
 }
 
 export default Tabs;
+
+
+
+
+

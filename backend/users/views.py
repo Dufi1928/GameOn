@@ -6,6 +6,7 @@ from rest_framework.exceptions import AuthenticationFailed
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework import status
+from django.conf import settings
 from django.contrib.auth.hashers import make_password
 
 from .models import User
@@ -30,7 +31,7 @@ def generate_jwt(user):
         'exp': datetime.datetime.utcnow() + datetime.timedelta(minutes=60),
         'iat': datetime.datetime.utcnow()
     }
-    return jwt.encode(payload, 'secret', algorithm='HS256')
+    return jwt.encode(payload, settings.SECRET_KEY, algorithm='HS256')
 
 
 def authenticate_user(email, password=None):
@@ -81,22 +82,22 @@ class Register(APIView):
         elif user_with_pseudo:
             return Response({'error': 'User with this pseudo already exists'}, status=400)
         else:
-            # Générer la clé privée à partir du mot de passe
+            # Generate the private key
             private_key = rsa.generate_private_key(
                 public_exponent=65537,
                 key_size=2048,
                 backend=default_backend()
             )
-            # Sérialiser la clé privée au format PEM sans chiffrement
+            # Serialize the private key in PEM format without encryption
             private_key_pem = private_key.private_bytes(
                 encoding=Encoding.PEM,
                 format=PrivateFormat.PKCS8,
                 encryption_algorithm=NoEncryption()
             )
-            # Générer la clé publique correspondante
+            # Generate the corresponding public key
             public_key = private_key.public_key()
 
-            # Sérialiser la clé publique au format PEM
+            # Serialize the public key in PEM format
             public_key_pem = public_key.public_bytes(
                 encoding=Encoding.PEM,
                 format=PublicFormat.SubjectPublicKeyInfo
@@ -151,7 +152,7 @@ class checkLoginView(APIView):
         if not token:
             return Response({'status': 'not logged in'}, status=status.HTTP_401_UNAUTHORIZED)
         try:
-            payload = jwt.decode(token, 'secret', algorithms=['HS256'])
+            payload = jwt.decode(token, settings.SECRET_KEY, algorithms=['HS256'])
         except jwt.ExpiredSignatureError:
             return Response({'status': 'not logged in'}, status=status.HTTP_401_UNAUTHORIZED)
         except Exception as e:
@@ -177,17 +178,20 @@ class SocialLogin(APIView):
         code = request.data.get('code')
         provider = request.data.get('provider')
 
+        print(request.data)
         if provider == 'google':
-
+            print(provider)
             url = "https://oauth2.googleapis.com/token"
             params = {
                 "client_id": "799631150296-rgsacnb85t05u6tl0uv2mfd0anpsrlq4.apps.googleusercontent.com",
                 "client_secret": "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",
                 "code": code,
                 "grant_type": "authorization_code",
-                "redirect_uri": "https://localhost:5173",
+                "redirect_uri": "https://mygameon.pro",
+
             }
             response = requests.post(url, data=params, headers={'Content-Type': 'application/x-www-form-urlencoded'})
+            print(response.content)
             tokens = response.json()
 
             if 'error' in tokens:
@@ -265,7 +269,7 @@ class UserView(APIView):
             raise AuthenticationFailed('User not logged in')
 
         try:
-            payload = jwt.decode(token, 'secret', algorithms=['HS256'])
+            payload = jwt.decode(token, settings.SECRET_KEY, algorithms=['HS256'])
         except jwt.ExpiredSignatureError:
             raise AuthenticationFailed('Invalid token')
         except Exception as e:

@@ -19,7 +19,7 @@ function Games(){
     useEffect(() => {
         const fetchGames = async () => {
             try {
-                const response = await fetch('https://localhost:8000/api/games/');
+                const response = await fetch('https://mygameon.pro:8000/api/games/');
                 const data = await response.json();
                 setGames(data as Game[]);
             } catch (error) {

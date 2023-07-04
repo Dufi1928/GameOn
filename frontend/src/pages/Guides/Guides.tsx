@@ -7,7 +7,7 @@ import Footer from '../../components/Footer/Footer';
 import axios from "axios";
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
-import ReactHtmlParser from 'react-html-parser';
+// import ReactHtmlParser from 'react-html-parser';
 import {IoSearch} from "react-icons/io5";
 import {useNavigate} from "react-router-dom";
 
@@ -62,7 +62,7 @@ const Guides: React.FC = () => {
     useEffect(() => {
         const fetchGuides = async () => {
             try {
-                const response = await axios.get<GameGuide[]>("https://localhost:8000/api/guides");
+                const response = await axios.get<GameGuide[]>("https://mygameon.pro:8000/api/guides");
                 setGuides(response.data);
                 console.log(response.data);
             } catch (error) {
@@ -78,7 +78,7 @@ const Guides: React.FC = () => {
         }
         return content;
     };
-
+    console.log(truncateContent)
     return (
         <>
             <Header />
@@ -108,7 +108,7 @@ const Guides: React.FC = () => {
                         </div>
                         <div className="guide-title-content">
                             <h2>{guide.title}</h2>
-                            <p>{ReactHtmlParser(truncateContent(guide.content, 250))}</p>
+                            {/*<p>{ReactHtmlParser(truncateContent(guide.content, 250))}</p>*/}
                         </div>
                     </div>
                 ))}

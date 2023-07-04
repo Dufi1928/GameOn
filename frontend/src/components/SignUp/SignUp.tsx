@@ -14,12 +14,19 @@ interface SignUpProps {
     setParentStep: (step: number) => void;
     setShowComponent: (component: string) => void;
     handleStep: (newStep: number) => void;
-    jwt: string;
+    setFirstName: React.Dispatch<React.SetStateAction<string>>;
+    setLastName: React.Dispatch<React.SetStateAction<string>>;
+    jwt?: string; // Made optional
     step?: number | null;
-    initialEmail: string; // Add initialEmail prop
-    initialFirstName: string; // Add initialFirstName prop
-    initialLastName: string; // Add initialLastName prop
+    setEmail: React.Dispatch<React.SetStateAction<string>>;
+    initialEmail?: string; // Made optional
+    email: string;
+    firstName: string;
+    lastName: string;
+    initialFirstName?: string; // Made optional
+    initialLastName?: string; // Made optional
 }
+
 
 interface Game {
     id: number;
@@ -48,7 +55,7 @@ const SignUp: FC<SignUpProps> = ({ setParentStep, step = null, initialEmail, ini
     useEffect(() => {
         const fetchGames = async () => {
             try {
-                const response = await fetch('https://localhost:8000/api/games/');
+                const response = await fetch('https://mygameon.pro:8000/api/games/');
                 const data = await response.json();
                 setGames(data as Game[]);
             } catch (error) {
@@ -62,9 +69,9 @@ const SignUp: FC<SignUpProps> = ({ setParentStep, step = null, initialEmail, ini
     const handleSignUpClick = (userData?: any) => {
         if (userData) {
             console.log(userData);
-            setEmail(userData.email);
-            setFirstName(userData.firstName);
-            setLastName(userData.lastName);
+            // setEmail(userData.email);
+            // setFirstName(userData.firstName);
+            // setLastName(userData.lastName);
         }
     };
 
@@ -81,7 +88,7 @@ const SignUp: FC<SignUpProps> = ({ setParentStep, step = null, initialEmail, ini
     const handleNextStep = async () => {
         try {
             const response = await axios.post<SignUpProps>(
-                "https://localhost:8000/api/CheckIfUserExist",
+                "https://mygameon.pro:8000/api/CheckIfUserExist",
                 {
                     email,
                     pseudo,
@@ -140,7 +147,7 @@ const SignUp: FC<SignUpProps> = ({ setParentStep, step = null, initialEmail, ini
     const hendelRegister = async () => {
         try {
             const response = await axios.post<SignUpProps>(
-                "https://localhost:8000/api/Register",
+                "https://mygameon.pro:8000/api/Register",
                 {
                     firstName,
                     lastName,
@@ -151,7 +158,9 @@ const SignUp: FC<SignUpProps> = ({ setParentStep, step = null, initialEmail, ini
                 }
             );
             document.cookie = `jwt=${response.data.jwt}; path=/`;
-            localStorage.setItem('jwt', response.data.jwt);
+            if (response.data.jwt) {
+                localStorage.setItem('jwt', response.data.jwt);
+            }
             navigate("/");
         } catch (error: unknown) {
             setParentStep(1);

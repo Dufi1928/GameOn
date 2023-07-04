@@ -49,7 +49,7 @@ const Friends: FC = () => {
     useEffect(() => {
         if (userId) {
             console.log(`Récupération des amis pour l'ID utilisateur : ${userId}`);
-            axios.post(`https://localhost:8000/api/friends`, { user_id: userId })
+            axios.post(`https://mygameon.pro:8000/api/friends`, { user_id: userId })
                 .then(response => {
                     setFriends(response.data);
                     console.log(response.data);

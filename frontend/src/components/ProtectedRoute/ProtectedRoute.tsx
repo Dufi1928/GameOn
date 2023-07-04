@@ -9,7 +9,7 @@ const ProtectedRoute: React.FC<{ children: ReactElement }> = ({ children }) => {
     useEffect(() => {
         const checkAuthentication = async () => {
             try {
-                const response = await axios.get('https://localhost:8000/api/user', {
+                const response = await axios.get('https://mygameon.pro:8000/api/user', {
                     withCredentials: true
                 });
 

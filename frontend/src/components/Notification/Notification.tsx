@@ -19,7 +19,7 @@ const Notification = (props: { notifications: NotificationData[] }) => {
     useEffect(() => {
         const sendIdsToAPI = async () => {
             try {
-                const response = await axios.post('https://localhost:8000/api/pseudos', { senders });
+                const response = await axios.post('https://mygameon.pro:8000/api/pseudos', { senders });
                 setNotificationData(response.data)
             } catch (error) {
                 console.error(error);

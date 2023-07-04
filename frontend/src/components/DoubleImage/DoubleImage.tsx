@@ -1,5 +1,5 @@
 import React from 'react';
-import './DoubleImage.scss';
+import './Doubleimage.scss';
 
 class DoubleImage extends React.Component {
     render() {

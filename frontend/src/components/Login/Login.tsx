@@ -1,6 +1,7 @@
-import React, { FC, useState } from "react";
+import { FC, useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
 import { useGoogleLogin, GoogleResponse, GoogleLoginResponse } from '@react-oauth/google';
 import { IoLockClosedOutline } from "react-icons/io5";
@@ -8,8 +9,8 @@ import { HiOutlineMail } from "react-icons/hi";
 import "../../scss/App.scss";
 import 'bootstrap/dist/css/bootstrap.css';
 import './Login.scss'
-import GoogleButton from "../GoogleButton/Googlebutton.tsx";
-import FacebookButton from "../FacebookButton/FacebookButton.tsx";
+import GoogleButton from "../GoogleButton/Googlebutton";
+import FacebookButton from "../FacebookButton/FacebookButton";
 
 interface LoginProps {
     setShowComponent: (component: string) => void;
@@ -17,6 +18,8 @@ interface LoginProps {
     setFirstName: (firstName: string) => void;
     setLastName: (lastName: string) => void;
     email: string;
+    firstName: string;
+    lastName: string;
 
 }
 
@@ -40,11 +43,10 @@ const Login: FC<LoginProps> = ({ setShowComponent, setEmail, setFirstName, setLa
         clearInputsErrors();
 
         try {
-            const response = await axios.post<LoginResponse>("https://localhost:8000/api/login", {
+            const response = await axios.post<LoginResponse>("https://mygameon.pro:8000/api/login", {
                 email,
                 password,
             });
-
             document.cookie = `jwt=${response.data.jwt}; path=/`;
             navigate("/");
         } catch (error: unknown) {

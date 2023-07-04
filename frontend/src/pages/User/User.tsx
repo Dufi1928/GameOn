@@ -34,7 +34,7 @@ function User() {
 
     useEffect(() => {
         if (id) {
-            axios.get(`https://localhost:8000/api/user-detail/${id}`)
+            axios.get(`https://mygameon.pro:8000/api/user-detail/${id}`)
                 .then((response) => {
                     setUserData(response.data);
                 })
@@ -55,14 +55,12 @@ function User() {
 
     const sendFriendRequest = (user_id: number) => {
         axios.defaults.withCredentials = true;
-        axios.post('https://localhost:8000/api/friend-request', { user_id })
+        axios.post('https://mygameon.pro:8000/api/friend-request', { user_id })
             .then((response) => {
                 console.log('Demande d\'ami envoyée avec succès'+ response);
-                // Ajoutez ici le code pour gérer la réponse de la requête si nécessaire
             })
             .catch((error) => {
                 console.error('Erreur lors de l\'envoi de la demande d\'ami :', error);
-                // Ajoutez ici le code pour gérer l'erreur de la requête si nécessaire
             });
     };
     const goMessage = (id: number) => {

@@ -40,6 +40,8 @@ interface Message {
     encrypted_content_sender: string;
     encrypted_content_receiver: string;
     timestamp: string;
+    receiver_content: string;
+    sender_content: string;
     read: boolean;
     sender_status: boolean;
     receiver_status: boolean;
@@ -50,11 +52,6 @@ interface Message {
     sender_id: string;
 }
 
-interface MyJwtPayload extends JwtPayload {
-    id?: string;
-    privet_key?: string;
-    hisPrivateKey?: string;
-}
 
 const Messages: React.FC = () => {
     const [receiverId, setReceiverId] = useState<string | null>(null);
@@ -69,7 +66,6 @@ const Messages: React.FC = () => {
     const [firstConnect, setFirstConnect] = useState<boolean | true>(true);
     const [searchValue, setSearchValue] = useState("");
     const [myPrivateKey, setMyPrivateKey] = useState("");
-    const [hisPrivateKey, setHisPrivateKey] = useState("");
     const { id } = useParams();
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -107,7 +103,6 @@ const Messages: React.FC = () => {
         const containerElement = document.querySelector('.react-input-emoji--container');
 
         if (buttonElement && containerElement) {
-            // Insérer le bouton avant le conteneur dans le DOM
             if (containerElement.parentNode) {
                 containerElement.parentNode.insertBefore(buttonElement, containerElement);
             }
@@ -122,10 +117,10 @@ const Messages: React.FC = () => {
             const jwt = Cookies.get('jwt');
             if (jwt) {
                 try {
-                    const decodedJwt = jwt_decode(jwt);
+                    const decodedJwt = jwt_decode(jwt) as any;
                     const userId = decodedJwt.id as string;
                     if (userId) {
-                        const response = await axios.post('https://localhost:8000/api/userinfo', {
+                        const response = await axios.post('https://mygameon.pro:8000/api/userinfo', {
                             userId: userId,
                         });
                         const myPrivateKeyResponse = response.data['private_key'];
@@ -143,11 +138,11 @@ const Messages: React.FC = () => {
 
 
     useEffect(() => {
-        if (firstConnect && id && receiverId) {
+        if (firstConnect && id) {
             setReceiverId(id);
             setFirstConnect(false);
         }
-    }, [firstConnect, id, receiverId]);
+    }, [firstConnect, id]);
 
 
 
@@ -182,19 +177,11 @@ const Messages: React.FC = () => {
         const fetchData = async () => {
             if (receiverId) {
                 try {
-                    const response = await axios.post('https://localhost:8000/api/reciverData', {
+                    const response = await axios.post('https://mygameon.pro:8000/api/reciverData', {
                         reciver_id: receiverId,
                     });
+                    console.log(receiverId);
                     setInterlocutorData(response.data);
-                } catch (error) {
-                    console.error('Erreur lors de l\'appel à l\'API:', error);
-                }
-                try {
-                    const response = await axios.post('https://localhost:8000/api/userinfo', {
-                        userId: receiverId,
-                    });
-                    const hisPrivateKeyResponse = response.data['private_key'];
-                    setHisPrivateKey(hisPrivateKeyResponse);
                 } catch (error) {
                     console.error('Erreur lors de l\'appel à l\'API:', error);
                 }
@@ -209,18 +196,17 @@ const Messages: React.FC = () => {
         if (interlocutorData) {
             const fetchMessages = async () => {
                 try {
-                    const response = await axios.post('https://localhost:8000/api/get-messages', {
+                    const response = await axios.post('https://mygameon.pro:8000/api/get-messages', {
                         interlocutor_id: interlocutorData.id
                     });
                     const messages = response.data.results;
                     const decryptedMessages = await Promise.all(messages.map(async (message: Message) => {
                         try {
-                            let key;
                             let messageToDecript;
                             if (message.sender_id === userID) {
                                 messageToDecript = message.encrypted_content_sender;
                             } else {
-                                messageToDecript = message.encrypted_content_sender;
+                                messageToDecript = message.encrypted_content_receiver;
                             }
                             const decryptedContent = await Decrypter(messageToDecript, myPrivateKey);
                             return { ...message, content: decryptedContent };
@@ -235,10 +221,9 @@ const Messages: React.FC = () => {
                     console.error('Erreur lors de la récupération des messages:', error);
                 }
             };
-
             fetchMessages();
         }
-    }, [hisPrivateKey]);
+    }, [interlocutorData, myPrivateKey, userID]);
 
     return (
         <div className="MessagesPage">

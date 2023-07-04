@@ -1,5 +1,3 @@
-from channels.layers import get_channel_layer
-from asgiref.sync import async_to_sync, sync_to_async
 from datetime import datetime
 from channels.db import database_sync_to_async
 from django.contrib.auth import get_user_model
@@ -41,7 +39,7 @@ class MessageConsumer(AsyncWebsocketConsumer):
     async def receive(self, text_data):
         try:
             text_data_json = json.loads(text_data)
-            print(f"Received message: {text_data_json}")
+            # print(f"Received message: {text_data_json}")
             sender_id_to_save = text_data_json.get('sender_id')
             receiver_id_to_save = text_data_json.get('receiver_id')
             content_to_save = text_data_json.get('content')
@@ -64,7 +62,8 @@ class MessageConsumer(AsyncWebsocketConsumer):
                             label=None
                         )
                     )
-                    print(encrypted_content_sender);
+                    # binary_representation = ''.join(format(byte, '08b') for byte in encrypted_content_sender)
+                    # print(binary_representation)
                     encrypted_content_sender_str = base64.b64encode(encrypted_content_sender).decode()
                 except ValueError as ve:
                     print(f"Encryption Error with sender's key: {ve}")
@@ -146,6 +145,8 @@ class MessageConsumer(AsyncWebsocketConsumer):
     def format_message(self, message, user):
         content = message.encrypted_content_receiver if message.receiver == user else message.encrypted_content_sender
         return {
+            'sender_content': message.encrypted_content_sender,
+            'receiver_content': message.encrypted_content_receiver,
             'sender': message.sender.pseudo,
             'sender_id': message.sender.id,
             'receiver_id': message.receiver.id,
